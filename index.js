@@ -14,23 +14,39 @@ const stripe = Stripe(process.env.SECRET_API_KEY);
 
 app.use(cors());
 
-app.post('/create-checkout-session', async (req, res) => {
-  const session = await stripe.checkout.sessions.create({
+app.post('/purchase-cell/:column/:row/:color/:note', async (req, res) => {
+    console.log('req.params:');
+    console.log(req.params);
+
+    const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
+    metadata: {
+        column: req.params.column,
+        row: req.params.row,
+        color: req.params.color,
+        note: req.params.note
+    },
+
     line_items: [
       {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: 'T-shirt',
-          },
+            name: `Cell ${req.params.column},${req.params.row}`,
+            metadata: {
+                column: req.params.column,
+                row: req.params.row,
+                color: req.params.color,
+                note: req.params.note
+            },
+            },
           unit_amount: 2000,
         },
         quantity: 1,
       },
     ],
     mode: 'payment',
-    success_url: process.env.SITE_URL + '/success',
+    success_url: process.env.SITE_URL + '/success?session_id={CHECKOUT_SESSION_ID}',
     cancel_url: process.env.SITE_URL + '/cancel',
   });
 
@@ -38,7 +54,8 @@ app.post('/create-checkout-session', async (req, res) => {
 });
 
 app.get('/success', async (req, res) => {
-    res.json({ result: "success" });
+    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+    res.json(session);
 });
 
 app.get('/cancel', async (req, res) => {
