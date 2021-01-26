@@ -63,8 +63,7 @@ app.post('/claim-pixel', async (req, res) => {
     const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     metadata: {
-        test: "yes",
-        // pixels: pixels
+        pixels: JSON.stringify(pixels),
     },
 
     line_items: line_items,
@@ -79,7 +78,14 @@ app.post('/claim-pixel', async (req, res) => {
 
 app.get('/success', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    res.json(session);
+
+    const affectedPixels = JSON.parse(session.metadata.pixels);
+
+    // TODO: Check if amount is large enough to change pixels
+    // commit changes to db
+    
+    console.log(affectedPixels);
+    res.json(affectedPixels);
 });
 
 app.get('/cancel', async (req, res) => {
