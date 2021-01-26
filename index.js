@@ -86,5 +86,14 @@ app.get('/cancel', async (req, res) => {
     res.json({ result: "cancel" });
 })
 
+app.post('/webhook', bodyParser.raw({type: 'application/json'}), (request, response) => {
+  const payload = request.body;
+
+  console.log("Got payload: ", payload);
+
+  response.status(200);
+});
+
+
 
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}!`));
