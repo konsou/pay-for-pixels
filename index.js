@@ -3,6 +3,8 @@
 
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+
 const app = express();
 
 require('dotenv').config();
@@ -12,19 +14,26 @@ require('dotenv').config();
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.SECRET_API_KEY);
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cors());
 
-app.post('/purchase-cell/:column/:row/:color/:note', async (req, res) => {
-    console.log('req.params:');
-    console.log(req.params);
+
+app.post('/claim-pixel', async (req, res) => {
+    console.log('req.body:');
+    console.log(req.body);
+
+    // TODO: HANDLE SEVERAL PIXELS
 
     const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     metadata: {
-        column: req.params.column,
-        row: req.params.row,
-        color: req.params.color,
-        note: req.params.note
+        x: req.body[0].column,
+        y: req.body[0].row,
+        color: req.body[0].color,
+        owner: req.body[0].owner,
+        note: req.body[0].note,
+        amount: req.body[0].amount,
     },
 
     line_items: [
@@ -32,15 +41,17 @@ app.post('/purchase-cell/:column/:row/:color/:note', async (req, res) => {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: `Cell ${req.params.column},${req.params.row}`,
+            name: `Cell ${req.body[0].x},${req.body[0].y}`,
             metadata: {
-                column: req.params.column,
-                row: req.params.row,
-                color: req.params.color,
-                note: req.params.note
+              x: req.body[0].column,
+              y: req.body[0].row,
+              color: req.body[0].color,
+              owner: req.body[0].owner,
+              note: req.body[0].note,
+              amount: req.body[0].amount,
+                  },
             },
-            },
-          unit_amount: 2000,
+          unit_amount: req.body[0].amount * 100,
         },
         quantity: 1,
       },
