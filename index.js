@@ -25,37 +25,50 @@ app.post('/claim-pixel', async (req, res) => {
 
     // TODO: HANDLE SEVERAL PIXELS
 
+    const pixels = req.body.map(pixel => {
+      return (
+        {
+          x: pixel.x,
+          y: pixel.y,
+          color: pixel.color,
+          owner: pixel.owner || 'Anonymous',
+          note: pixel.note,
+          amount: pixel.amount,
+        }
+      )
+    });
+
+    console.log('pixels:');
+    console.log(pixels);
+
+    const line_items = pixels.map(pixel => {
+      return (
+        {
+          price_data: {
+            currency: 'eur',
+            product_data: {
+              name: `Cell ${pixel.x},${pixel.y}`,
+              // metadata: { pixel: pixel },
+              },
+            unit_amount: pixel.amount * 100,
+          },
+          quantity: 1,
+        }
+      )
+    });
+
+    console.log('line_items:');
+    console.log(line_items);
+
     const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     metadata: {
-        x: req.body[0].column,
-        y: req.body[0].row,
-        color: req.body[0].color,
-        owner: req.body[0].owner,
-        note: req.body[0].note,
-        amount: req.body[0].amount,
+        test: "yes",
+        // pixels: pixels
     },
 
-    line_items: [
-      {
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: `Cell ${req.body[0].x},${req.body[0].y}`,
-            metadata: {
-              x: req.body[0].column,
-              y: req.body[0].row,
-              color: req.body[0].color,
-              owner: req.body[0].owner,
-              note: req.body[0].note,
-              amount: req.body[0].amount,
-                  },
-            },
-          unit_amount: req.body[0].amount * 100,
-        },
-        quantity: 1,
-      },
-    ],
+    line_items: line_items,
+
     mode: 'payment',
     success_url: process.env.SITE_URL + '/success?session_id={CHECKOUT_SESSION_ID}',
     cancel_url: process.env.SITE_URL + '/cancel',
