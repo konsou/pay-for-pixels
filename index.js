@@ -18,6 +18,34 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+// addressing: pixels[row][column] or pixels[y][x]
+let pixels = [];
+
+const emptyPixel = {
+  color: '#FFFFFF',
+  owner: 'not claimed',
+  note: '',
+  amount: 0.45,
+}
+
+// TODO: load pixels from DB
+for (let row = 0; row < 100; row++) {
+  pixels.push([]);
+
+  for (let column = 0; column < 100; column++) {
+    pixels[row].push({
+      ...emptyPixel,
+      x: column,
+      y: row,
+      color: `#${ (row * column).toString(16)}`,
+    })
+  }
+}
+
+app.get('/pixels', async (req, res) => {
+  res.json(pixels)
+})
+
 
 app.post('/claim-pixels', async (req, res) => {
     console.log('req.body:');
