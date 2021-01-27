@@ -42,6 +42,8 @@ for (let row = 0; row < 100; row++) {
   }
 }
 
+pixels[0][0].color = 'black'
+
 app.get('/pixels', async (req, res) => {
   res.json(pixels)
 })
@@ -89,13 +91,11 @@ app.post('/claim-pixels', async (req, res) => {
     console.log(line_items);
 
     const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    metadata: {
-        pixels: JSON.stringify(pixels),
+      payment_method_types: ['card'],
+      metadata: {
+          pixels: JSON.stringify(pixels),
     },
-
     line_items: line_items,
-
     mode: 'payment',
     success_url: process.env.SITE_URL + '/success?session_id={CHECKOUT_SESSION_ID}',
     cancel_url: process.env.SITE_URL + '/cancel',
@@ -107,13 +107,26 @@ app.post('/claim-pixels', async (req, res) => {
 app.get('/success', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
 
-    const affectedPixels = JSON.parse(session.metadata.pixels);
+    const affectedPixels = JSON.parse(session.metadata.pixels)
+    const changedPixels = []
 
     // TODO: Check if amount is large enough to change pixels
     // commit changes to db
-
-    console.log(affectedPixels);
-    res.json(affectedPixels);
+    affectedPixels.forEach( pixel => {
+      const oldPixel = pixels[pixel.y][pixel.x]
+      console.log('old pixel: ', oldPixel)
+      console.log('new pixel: ', pixel)
+      if (pixel.amount > oldPixel.amount) {
+        console.log('amount is greater, replacing')
+        pixels[pixel.y][pixel.x] = pixel
+        changedPixels.push(pixel)
+      } else {
+        console.log('amount is not greater, not replacing')
+      }
+    })
+    //console.log(affectedPixels);
+    //res.json(changedPixels);
+    res.redirect('http://localhost:3000')
 });
 
 app.get('/cancel', async (req, res) => {
