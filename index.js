@@ -18,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+console.log('frontend url is', process.env.FRONTEND_URL)
+
 // addressing: pixels[row][column] or pixels[y][x]
 let pixels = [];
 
@@ -126,7 +128,7 @@ app.get('/success', async (req, res) => {
     })
     //console.log(affectedPixels);
     //res.json(changedPixels);
-    res.redirect('http://localhost:3000')
+    res.redirect(process.env.FRONTEND_URL)
 });
 
 app.get('/cancel', async (req, res) => {
