@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-app.post('/claim-pixel', async (req, res) => {
+app.post('/claim-pixels', async (req, res) => {
     console.log('req.body:');
     console.log(req.body);
 
@@ -47,7 +47,7 @@ app.post('/claim-pixel', async (req, res) => {
           price_data: {
             currency: 'eur',
             product_data: {
-              name: `Cell ${pixel.x},${pixel.y}`,
+              name: `Pixel at ${pixel.x},${pixel.y}`,
               // metadata: { pixel: pixel },
               },
             unit_amount: pixel.amount * 100,
@@ -83,7 +83,7 @@ app.get('/success', async (req, res) => {
 
     // TODO: Check if amount is large enough to change pixels
     // commit changes to db
-    
+
     console.log(affectedPixels);
     res.json(affectedPixels);
 });
