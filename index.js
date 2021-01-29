@@ -75,10 +75,8 @@ app.get('/pixels', async (req, res) => {
 
 
 app.post('/claim-pixels', async (req, res) => {
-    console.log('req.body:');
-    console.log(req.body);
-
-    // TODO: HANDLE SEVERAL PIXELS
+    // console.log('req.body:');
+    // console.log(req.body);
 
     const pixels = req.body.map(pixel => {
       return (
@@ -112,8 +110,8 @@ app.post('/claim-pixels', async (req, res) => {
       )
     });
 
-    console.log('line_items:');
-    console.log(line_items);
+    // console.log('line_items:');
+    // console.log(line_items);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
