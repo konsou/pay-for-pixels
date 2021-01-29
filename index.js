@@ -137,14 +137,14 @@ app.get('/success', async (req, res) => {
     // commit changes to db
     affectedPixels.forEach( pixel => {
       const oldPixel = pixels[pixel.y][pixel.x]
-      console.log('old pixel: ', oldPixel)
-      console.log('new pixel: ', pixel)
+      // console.log('old pixel: ', oldPixel)
+      // console.log('new pixel: ', pixel)
       if (pixel.amount > oldPixel.amount) {
-        console.log('amount is greater, replacing')
+        console.log(`amount for pixel ${pixel.x}, ${pixel.y} (${pixel.amount}) is greater than old (${oldPixel.amount}), replacing`)
         pixels[pixel.y][pixel.x] = pixel
         changedPixels.push(pixel)
       } else {
-        console.log('amount is not greater, not replacing')
+        console.log(`amount for pixel ${pixel.x}, ${pixel.y} (${pixel.amount}) is not greater than old (${oldPixel.amount}), not replacing`)
       }
     })
 
