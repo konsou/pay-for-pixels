@@ -1,6 +1,3 @@
-// This example sets up an endpoint using the Express framework.
-// Watch this video to get started: https://youtu.be/rPR2aJ6XnAc.
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -20,7 +17,7 @@ app.use(cors());
 
 console.log('frontend url is', process.env.FRONTEND_URL)
 
-// addressing: pixels[row][column] or pixels[y][x]
+// addressing: pixels[row][column], or, pixels[y][x]
 let pixels = [];
 
 const emptyPixel = {
@@ -39,12 +36,12 @@ for (let row = 0; row < 100; row++) {
       ...emptyPixel,
       x: column,
       y: row,
-      color: `#${ (row * column).toString(16)}`,
+      // color: `#${ (row * column).toString(16)}`,
     })
   }
 }
 
-pixels[0][0].color = 'black'
+// pixels[0][0].color = 'black'
 
 app.get('/pixels', async (req, res) => {
   res.json(pixels)
