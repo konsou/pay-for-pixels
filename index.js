@@ -1,10 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const app = express();
 
 require('dotenv').config();
+
+JSON_PIXELS_FILENAME = 'pixels.json'
 
 // Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
@@ -17,31 +20,54 @@ app.use(cors());
 
 console.log('frontend url is', process.env.FRONTEND_URL)
 
+const savePixels = (pixels) => {
+  const pixelsJson = JSON.stringify(pixels, null, 4);
+  fs.writeFile(JSON_PIXELS_FILENAME, pixelsJson, (err) => {
+    if (err) { console.error(err) }
+    else { console.log('pixels saved') }
+  })
+}
+
+const loadPixels = () => {
+  const data = fs.readFileSync(JSON_PIXELS_FILENAME)
+  console.log('pixels loaded')
+  return JSON.parse(data)
+}
+
 // addressing: pixels[row][column], or, pixels[y][x]
 let pixels = [];
 
-const emptyPixel = {
-  color: '#FFFFFF',
-  owner: 'not claimed',
-  note: '',
-  amount: 0.45,
-}
+try {
+  pixels = loadPixels()
+} catch (err) {
+  console.log('generate empty pixels')
 
-// TODO: load pixels from DB
-for (let row = 0; row < 100; row++) {
-  pixels.push([]);
-
-  for (let column = 0; column < 100; column++) {
-    pixels[row].push({
-      ...emptyPixel,
-      x: column,
-      y: row,
-      // color: `#${ (row * column).toString(16)}`,
-    })
+  const emptyPixel = {
+    color: '#FFFFFF',
+    owner: 'not claimed',
+    note: '',
+    amount: 0.45,
   }
+  
+  // TODO: load pixels from DB
+  for (let row = 0; row < 100; row++) {
+    pixels.push([]);
+  
+    for (let column = 0; column < 100; column++) {
+      pixels[row].push({
+        ...emptyPixel,
+        x: column,
+        y: row,
+        // color: `#${ (row * column).toString(16)}`,
+      })
+    }
+  }
+  
 }
 
-// pixels[0][0].color = 'black'
+
+
+
 
 app.get('/pixels', async (req, res) => {
   res.json(pixels)
@@ -123,6 +149,9 @@ app.get('/success', async (req, res) => {
         console.log('amount is not greater, not replacing')
       }
     })
+
+    savePixels(pixels)
+
     //console.log(affectedPixels);
     //res.json(changedPixels);
     res.redirect(process.env.FRONTEND_URL)
