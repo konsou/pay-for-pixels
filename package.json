@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build-frontend": "del /s /q frontend_build\\* && cd ..\\pay-for-pixels-frontend && npm run build && xcopy /e build ..\\pay-for-pixels\\frontend_build"
   },
   "repository": {
     "type": "git",
