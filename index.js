@@ -18,6 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
+// Frontend hosting
+app.use(express.static('frontend_build'))
+
 console.log('frontend url is', process.env.FRONTEND_URL)
 
 const savePixels = (pixels) => {
