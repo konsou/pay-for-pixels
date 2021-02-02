@@ -112,14 +112,15 @@ app.post('/claim-pixels', async (req, res) => {
 
     console.log('pixels:');
     console.log(pixels);
-
     const line_items = pixels.map(pixel => {
+      console.log('image url:', `${process.env.FRONTEND_URL}/color-images/${pixel.color}/20`)
       return (
         {
           price_data: {
             currency: 'eur',
             product_data: {
               name: `Pixel at ${pixel.x},${pixel.y}`,
+              images: [ `${process.env.FRONTEND_URL}/color-images/${pixel.color.substring(1)}/20` ]
               // metadata: { pixel: pixel },
               },
             unit_amount: pixel.amount * 100,
