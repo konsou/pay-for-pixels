@@ -82,13 +82,17 @@ app.get('/color-images/:color/:size', async (req, res) => {
   ///:color/:size'
   const color = req.params.color
   const size = req.params.size
-  const filename = `/color-images/${color}-${size}.png`
-  console.log(`request for color image - color ${color} size ${size}`)
+  let filename
+  if (size <= 500) {
+    filename = `/color-images/${color}-${size}.png`
+    console.log(`request for color image - color ${color} size ${size}`)
 
-  if (!fs.existsSync(`.${filename}`)) {
-    await generateAndSaveColorImage(size, `#${color}`, `.${filename}`)
+    if (!fs.existsSync(`.${filename}`)) {
+      await generateAndSaveColorImage(size, `#${color}`, `.${filename}`)
+    }
+  } else {
+    filename = '/images/trollface.png'
   }
-
   res.sendFile(__dirname + filename)
 })
 
