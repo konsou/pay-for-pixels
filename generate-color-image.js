@@ -1,5 +1,8 @@
 const Jimp = require('jimp');
 
+// TODO: prevent auto-spamming of zillions of images to fill disk
+// TODO: implement max size?
+
 const generateAndSaveColorImage = async (size, color, fileName) => {
     console.log(`in generateAndSaveColorImage`)
     console.log(size, color, fileName)
