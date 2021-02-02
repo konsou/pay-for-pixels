@@ -3,6 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 
+const generateColorImage = require('./generate-color-image')
+
 const app = express();
 
 require('dotenv').config();
@@ -76,6 +78,15 @@ app.get('/pixels', async (req, res) => {
   res.json(pixels)
 })
 
+app.get('/color-images/:color/:size', async (req, res) => {
+  ///:color/:size'
+  const color = req.params.color
+  const size = req.params.size
+  
+  console.log(`request for color image - color ${color} size ${size}`)
+  res.sendFile(__dirname + '/test.png')
+})
+
 
 app.post('/claim-pixels', async (req, res) => {
     // console.log('req.body:');
@@ -133,6 +144,8 @@ app.post('/claim-pixels', async (req, res) => {
 app.get('/success', async (req, res) => {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
 
+    // TODO: FIX THIS. METADATA CAN ONLY BE 500 CHARACTERS LONG.
+    // NEED TO USE WEBHOOKS?
     const affectedPixels = JSON.parse(session.metadata.pixels)
     const changedPixels = []
 
