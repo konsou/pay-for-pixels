@@ -14,6 +14,7 @@ JSON_PIXELS_FILENAME = 'pixels.json'
 // Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
 const Stripe = require('stripe');
+const generateAndSaveColorImage = require('./generate-color-image');
 const stripe = Stripe(process.env.SECRET_API_KEY);
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -73,7 +74,6 @@ try {
 
 
 
-
 app.get('/pixels', async (req, res) => {
   res.json(pixels)
 })
@@ -82,9 +82,11 @@ app.get('/color-images/:color/:size', async (req, res) => {
   ///:color/:size'
   const color = req.params.color
   const size = req.params.size
-  
+  const filename = `/color-images/${color}-${size}.png`
+
+  await generateAndSaveColorImage(size, `#${color}`, `.${filename}`)
   console.log(`request for color image - color ${color} size ${size}`)
-  res.sendFile(__dirname + '/test.png')
+  res.sendFile(__dirname + filename)
 })
 
 
