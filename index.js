@@ -83,9 +83,12 @@ app.get('/color-images/:color/:size', async (req, res) => {
   const color = req.params.color
   const size = req.params.size
   const filename = `/color-images/${color}-${size}.png`
-
-  await generateAndSaveColorImage(size, `#${color}`, `.${filename}`)
   console.log(`request for color image - color ${color} size ${size}`)
+
+  if (!fs.existsSync(`.${filename}`)) {
+    await generateAndSaveColorImage(size, `#${color}`, `.${filename}`)
+  }
+
   res.sendFile(__dirname + filename)
 })
 

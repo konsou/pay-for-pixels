@@ -13,21 +13,6 @@ const generateAndSaveColorImage = async (size, color, fileName) => {
     image.setPixelColor(colorHex, 0, 0)
     image.resize(parseInt(size), parseInt(size))
     await image.writeAsync(fileName)
-    /*
-    for (let y = 0; y < size; y++) {
-        for (let x = 0; x < size; x++) {
-            image.setPixelColor(colorHex, x, y)
-        }
-    }
-    */
-  
-        /*
-        imageData.forEach((row, y) => {
-          row.forEach((color, x) => {
-            image.setPixelColor(color, x, y);
-          });
-        });
-        */
 }
 
 module.exports = generateAndSaveColorImage
