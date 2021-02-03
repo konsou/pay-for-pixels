@@ -95,7 +95,7 @@ app.get('/events', async (req, res) => {
     while (true) {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      console.log('Emit', ++count);
+      //console.log('Emit', ++count);
       // Emit an SSE that contains the current 'count' as a string
       res.write(`data: ${count}\n\n`);
     }
