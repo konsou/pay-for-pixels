@@ -18101,12 +18101,12 @@
             "y": 22
         },
         {
-            "color": "#FFFFFF",
+            "x": 57,
+            "y": 22,
+            "color": "#fcb900",
             "owner": "not claimed",
             "note": "",
-            "amount": 0.45,
-            "x": 57,
-            "y": 22
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
@@ -18133,12 +18133,12 @@
             "y": 22
         },
         {
-            "color": "#FFFFFF",
+            "x": 61,
+            "y": 22,
+            "color": "#fcb900",
             "owner": "not claimed",
             "note": "",
-            "amount": 0.45,
-            "x": 61,
-            "y": 22
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
@@ -18911,28 +18911,28 @@
             "y": 23
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 58,
-            "y": 23
-        },
-        {
-            "color": "#FFFFFF",
+            "y": 23,
+            "color": "#fcb900",
             "owner": "not claimed",
             "note": "",
-            "amount": 0.45,
+            "amount": 0.5
+        },
+        {
             "x": 59,
-            "y": 23
-        },
-        {
-            "color": "#FFFFFF",
+            "y": 23,
+            "color": "#fcb900",
             "owner": "not claimed",
             "note": "",
-            "amount": 0.45,
+            "amount": 0.5
+        },
+        {
             "x": 60,
-            "y": 23
+            "y": 23,
+            "color": "#fcb900",
+            "owner": "not claimed",
+            "note": "",
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
@@ -31077,12 +31077,12 @@
             "amount": 0.5
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 75,
-            "y": 38
+            "y": 38,
+            "color": "#000000",
+            "owner": "konso",
+            "note": "",
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",

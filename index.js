@@ -42,6 +42,7 @@ const loadPixels = () => {
 
 // addressing: pixels[row][column], or, pixels[y][x]
 let pixels = [];
+let updatedPixelsEvent = [];
 
 try {
   pixels = loadPixels()
@@ -76,6 +77,28 @@ try {
 
 app.get('/pixels', async (req, res) => {
   res.json(pixels)
+})
+
+app.get('/events', async (req, res) => {
+  console.log('get events')
+  res.set({
+    'Cache-Control': 'no-cache',
+    'Content-Type': 'text/event-stream',
+    'Connection': 'keep-alive'
+  });
+  res.flushHeaders();
+  // Tell the client to retry every 10 seconds if connectivity is lost
+  res.write('retry: 10000\n\n');
+
+  let count = 0;
+
+    while (true) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      console.log('Emit', ++count);
+      // Emit an SSE that contains the current 'count' as a string
+      res.write(`data: ${count}\n\n`);
+    }
 })
 
 app.get('/color-images/:color/:size', async (req, res) => {
