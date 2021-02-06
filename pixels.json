@@ -811,20 +811,20 @@
             "amount": 0.5
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 1,
-            "y": 1
+            "y": 1,
+            "color": "#00d084",
+            "owner": "konso",
+            "note": "",
+            "amount": 0.5
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 2,
-            "y": 1
+            "y": 1,
+            "color": "#fcb900",
+            "owner": "konso",
+            "note": "",
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",

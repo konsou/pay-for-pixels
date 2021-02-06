@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const { v4: randomUuid } = require('uuid')
 
 const generateColorImage = require('./generate-color-image')
 
@@ -25,6 +26,7 @@ app.use(cors());
 app.use(express.static('frontend_build'))
 
 console.log('frontend url is', process.env.FRONTEND_URL)
+console.log('backend url is ', process.env.BACKEND_URL)
 
 const savePixels = (pixels) => {
   const pixelsJson = JSON.stringify(pixels, null, 4);
@@ -40,9 +42,15 @@ const loadPixels = () => {
   return JSON.parse(data)
 }
 
+const sendEventsToAll = (clients, events) => {
+  console.log('send events', events)
+  clients.forEach(c => c.res.write(`data: ${JSON.stringify(events)}\n\n`))
+}
+
 // addressing: pixels[row][column], or, pixels[y][x]
 let pixels = [];
 let updatedPixelsEvent = [];
+let clients = [];
 
 try {
   pixels = loadPixels()
@@ -90,15 +98,18 @@ app.get('/events', async (req, res) => {
   // Tell the client to retry every 10 seconds if connectivity is lost
   res.write('retry: 10000\n\n');
 
-  let count = 0;
+  const clientId = randomUuid();
+  const newClient = {
+    id: clientId,
+    res
+  }
+  console.log(`${clientId} connected`)
+  clients.push(newClient);
 
-    while (true) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      //console.log('Emit', ++count);
-      // Emit an SSE that contains the current 'count' as a string
-      res.write(`data: ${count}\n\n`);
-    }
+  req.on('close', () => {
+    console.log(`${clientId} connection closed`);
+    clients = clients.filter(client => client.id !== clientId);
+  })
 })
 
 app.get('/color-images/:color/:size', async (req, res) => {
@@ -167,14 +178,15 @@ app.post('/claim-pixels', async (req, res) => {
     },
     line_items: line_items,
     mode: 'payment',
-    success_url: process.env.SITE_URL + '/success?session_id={CHECKOUT_SESSION_ID}',
-    cancel_url: process.env.SITE_URL + '/cancel',
+    success_url: process.env.BACKEND_URL + '/success?session_id={CHECKOUT_SESSION_ID}',
+    cancel_url: process.env.BACKEND_URL + '/cancel',
   });
 
   res.json({ id: session.id });
 });
 
 app.get('/success', async (req, res) => {
+    console.log('transaction successful')
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
 
     // TODO: FIX THIS. METADATA CAN ONLY BE 500 CHARACTERS LONG.
@@ -198,6 +210,7 @@ app.get('/success', async (req, res) => {
     })
 
     savePixels(pixels)
+    sendEventsToAll(clients, changedPixels)
 
     //console.log(affectedPixels);
     //res.json(changedPixels);
