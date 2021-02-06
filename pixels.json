@@ -827,12 +827,12 @@
             "amount": 0.5
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 3,
-            "y": 1
+            "y": 1,
+            "color": "#eb144c",
+            "owner": "konso",
+            "note": "",
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
@@ -4171,12 +4171,12 @@
             "y": 5
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 20,
-            "y": 5
+            "y": 5,
+            "color": "#0693e3",
+            "owner": "konso",
+            "note": "",
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
