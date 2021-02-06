@@ -13209,12 +13209,12 @@
             "y": 16
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 47,
-            "y": 16
+            "y": 16,
+            "color": "#00d084",
+            "owner": "konso",
+            "note": "",
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
