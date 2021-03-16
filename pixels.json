@@ -25,12 +25,12 @@
             "amount": 0.5
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 3,
-            "y": 0
+            "y": 0,
+            "color": "#9900ef",
+            "owner": "Sparlodian",
+            "note": "",
+            "amount": 0.5
         },
         {
             "x": 4,
@@ -4027,12 +4027,12 @@
             "y": 5
         },
         {
-            "color": "#FFFFFF",
+            "x": 2,
+            "y": 5,
+            "color": "#00d084",
             "owner": "not claimed",
             "note": "",
-            "amount": 0.45,
-            "x": 2,
-            "y": 5
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
@@ -16169,12 +16169,12 @@
             "y": 20
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 16,
-            "y": 20
+            "y": 20,
+            "color": "#0693e3",
+            "owner": "Erkki",
+            "note": "",
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
@@ -23731,12 +23731,12 @@
             "y": 29
         },
         {
-            "color": "#FFFFFF",
-            "owner": "not claimed",
-            "note": "",
-            "amount": 0.45,
             "x": 59,
-            "y": 29
+            "y": 29,
+            "color": "#f78da7",
+            "owner": "konso",
+            "note": "",
+            "amount": 0.5
         },
         {
             "color": "#FFFFFF",
